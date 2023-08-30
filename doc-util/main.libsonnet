@@ -30,8 +30,8 @@
       d.arg('name', d.T.string),
       d.arg('url', d.T.string),
       d.arg('help', d.T.string),
-      d.arg('filename', d.T.string, ''),
-      d.arg('version', d.T.string, 'master'),
+      d.arg('filename', d.T.string, '', isOptional=true),
+      d.arg('version', d.T.string, 'master', isOptional=true),
     ]),
     new(name, url, help, filename='', version='master')::
       {
@@ -44,7 +44,6 @@
         url: url,
         filename: filename,
         version: version,
-
       }
       + self.withInstallTemplate(
         'jb install %(url)s@%(version)s'
@@ -84,16 +83,26 @@
 
   '#object': d.obj('Utilities for documenting Jsonnet objects (`{ }`).'),
   object:: {
-    '#new': d.fn('new creates a new object, optionally with description and fields', [d.arg('help', d.T.string), d.arg('fields', d.T.object)]),
-    new(help='', fields={}):: { object: {
-      help: help,
-      fields: fields,
-    } },
+    '#new': d.fn(
+      help='new creates a new object, optionally with description and fields',
+      args=[
+        d.arg('help', d.T.string, '', isOptional=true),
+        d.arg('fields', d.T.object, {}, isOptional=true),
+      ]
+    ),
+    new(help='', fields={}):: {
+      object: {
+        help: help,
+        fields: fields,
+      },
+    },
 
     '#withFields': d.fn('The `withFields` modifier overrides the fields property of an already created object', [d.arg('fields', d.T.object)]),
-    withFields(fields):: { object+: {
-      fields: fields,
-    } },
+    withFields(fields):: {
+      object+: {
+        fields: fields,
+      },
+    },
   },
 
   '#obj': self.object['#new'] + d.func.withHelp('`obj` is a shorthand for `object.new`'),
@@ -101,21 +110,33 @@
 
   '#func': d.obj('Utilities for documenting Jsonnet methods (functions of objects)'),
   func:: {
-    '#new': d.fn('new creates a new function, optionally with description and arguments', [d.arg('help', d.T.string), d.arg('args', d.T.array)]),
-    new(help='', args=[]):: { 'function': {
-      help: help,
-      args: args,
-    } },
+    '#new': d.fn(
+      help='new creates a new function, optionally with description and arguments',
+      args=[
+        d.arg('help', d.T.string, default='', isOptional=true),
+        d.arg('args', d.T.array, default=[], isOptional=true),
+      ]
+    ),
+    new(help='', args=[]):: {
+      'function': {
+        help: help,
+        args: args,
+      },
+    },
 
     '#withHelp': d.fn('The `withHelp` modifier overrides the help text of that function', [d.arg('help', d.T.string)]),
-    withHelp(help):: { 'function'+: {
-      help: help,
-    } },
+    withHelp(help):: {
+      'function'+: {
+        help: help,
+      },
+    },
 
     '#withArgs': d.fn('The `withArgs` modifier overrides the arguments of that function', [d.arg('args', d.T.array)]),
-    withArgs(args):: { 'function'+: {
-      args: args,
-    } },
+    withArgs(args):: {
+      'function'+: {
+        args: args,
+      },
+    },
   },
 
   '#fn': self.func['#new'] + d.func.withHelp('`fn` is a shorthand for `func.new`'),
@@ -139,12 +160,14 @@
     |||, [
       d.arg('name', d.T.string),
       d.arg('type', d.T.string),
-      d.arg('default', d.T.any),
-      d.arg('enums', d.T.array),
+      d.arg('default', d.T.any, isOptional=true),
+      d.arg('enums', d.T.array, isOptional=true),
+      d.arg('isOptional', d.T.boolean, false, null, isOptional=true),
     ]),
-    new(name, type, default=null, enums=null): {
+    new(name, type, default=null, enums=null, isOptional=false): {
       name: name,
       type: type,
+      isOptional: isOptional,
       default: default,
       enums: enums,
     },
@@ -154,12 +177,21 @@
 
   '#value': d.obj('Utilities for documenting plain Jsonnet values (primitives)'),
   value:: {
-    '#new': d.fn('new creates a new object of given type, optionally with description and default value', [d.arg('type', d.T.string), d.arg('help', d.T.string), d.arg('default', d.T.any)]),
-    new(type, help='', default=null): { value: {
-      help: help,
-      type: type,
-      default: default,
-    } },
+    '#new': d.fn(
+      help='new creates a new object of given type, optionally with description and default value',
+      args=[
+        d.arg('type', d.T.string),
+        d.arg('help', d.T.string, default='', isOptional=true),
+        d.arg('default', d.T.any, isOptional=true),
+      ]
+    ),
+    new(type, help='', default=null): {
+      value: {
+        help: help,
+        type: type,
+        default: default,
+      },
+    },
   },
   '#val': self.value['#new'] + self.func.withHelp('`val` is a shorthand for `value.new`'),
   val:: self.value.new,
@@ -214,5 +246,4 @@
     ]
   ),
   render:: (import './render.libsonnet').render,
-
 }

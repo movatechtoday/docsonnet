@@ -18,23 +18,23 @@ local d = import "github.com/jsonnet-libs/docsonnet/doc-util/main.libsonnet"
 
 ## Index
 
-* [`fn arg(name, type, default, enums)`](#fn-arg)
-* [`fn fn(help, args)`](#fn-fn)
-* [`fn obj(help, fields)`](#fn-obj)
+* [`fn arg(name, type, default, enums, isOptional=false)`](#fn-arg)
+* [`fn fn(help="", args=[])`](#fn-fn)
+* [`fn obj(help="", fields={})`](#fn-obj)
 * [`fn pkg(name, url, help, filename="", version="master")`](#fn-pkg)
 * [`fn render(obj)`](#fn-render)
-* [`fn val(type, help, default)`](#fn-val)
+* [`fn val(type, help="", default)`](#fn-val)
 * [`obj argument`](#obj-argument)
-  * [`fn new(name, type, default, enums)`](#fn-argumentnew)
+  * [`fn new(name, type, default, enums, isOptional=false)`](#fn-argumentnew)
 * [`obj func`](#obj-func)
-  * [`fn new(help, args)`](#fn-funcnew)
+  * [`fn new(help="", args=[])`](#fn-funcnew)
   * [`fn withArgs(args)`](#fn-funcwithargs)
   * [`fn withHelp(help)`](#fn-funcwithhelp)
 * [`obj object`](#obj-object)
-  * [`fn new(help, fields)`](#fn-objectnew)
+  * [`fn new(help="", fields={})`](#fn-objectnew)
   * [`fn withFields(fields)`](#fn-objectwithfields)
 * [`obj value`](#obj-value)
-  * [`fn new(type, help, default)`](#fn-valuenew)
+  * [`fn new(type, help="", default)`](#fn-valuenew)
 * [`obj T`](#obj-t)
 * [`obj package`](#obj-package)
   * [`fn new(name, url, help, filename="", version="master")`](#fn-packagenew)
@@ -45,7 +45,7 @@ local d = import "github.com/jsonnet-libs/docsonnet/doc-util/main.libsonnet"
 ### fn arg
 
 ```ts
-arg(name, type, default, enums)
+arg(name, type, default, enums, isOptional=false)
 ```
 
 `arg` is a shorthand for `argument.new`
@@ -53,7 +53,7 @@ arg(name, type, default, enums)
 ### fn fn
 
 ```ts
-fn(help, args)
+fn(help="", args=[])
 ```
 
 `fn` is a shorthand for `func.new`
@@ -61,7 +61,7 @@ fn(help, args)
 ### fn obj
 
 ```ts
-obj(help, fields)
+obj(help="", fields={})
 ```
 
 `obj` is a shorthand for `object.new`
@@ -95,7 +95,7 @@ Call with: `jsonnet -S -c -m docs/ docs.jsonnet`
 ### fn val
 
 ```ts
-val(type, help, default)
+val(type, help="", default)
 ```
 
 `val` is a shorthand for `value.new`
@@ -107,7 +107,7 @@ Utilities for creating function arguments
 #### fn argument.new
 
 ```ts
-new(name, type, default, enums)
+new(name, type, default, enums, isOptional=false)
 ```
 
 `new` creates a new function argument, taking the `name`, the `type`. Optionally it
@@ -131,7 +131,7 @@ Utilities for documenting Jsonnet methods (functions of objects)
 #### fn func.new
 
 ```ts
-new(help, args)
+new(help="", args=[])
 ```
 
 new creates a new function, optionally with description and arguments
@@ -159,7 +159,7 @@ Utilities for documenting Jsonnet objects (`{ }`).
 #### fn object.new
 
 ```ts
-new(help, fields)
+new(help="", fields={})
 ```
 
 new creates a new object, optionally with description and fields
@@ -179,7 +179,7 @@ Utilities for documenting plain Jsonnet values (primitives)
 #### fn value.new
 
 ```ts
-new(type, help, default)
+new(type, help="", default)
 ```
 
 new creates a new object of given type, optionally with description and default value
