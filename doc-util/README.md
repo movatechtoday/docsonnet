@@ -18,14 +18,14 @@ local d = import "github.com/jsonnet-libs/docsonnet/doc-util/main.libsonnet"
 
 ## Index
 
-* [`fn arg(name, type, default, enums, isOptional=false)`](#fn-arg)
+* [`fn arg(name, type, default, enums, optional=false)`](#fn-arg)
 * [`fn fn(help="", args=[])`](#fn-fn)
 * [`fn obj(help="", fields={})`](#fn-obj)
 * [`fn pkg(name, url, help, filename="", version="master")`](#fn-pkg)
 * [`fn render(obj)`](#fn-render)
 * [`fn val(type, help="", default)`](#fn-val)
 * [`obj argument`](#obj-argument)
-  * [`fn new(name, type, default, enums, isOptional=false)`](#fn-argumentnew)
+  * [`fn new(name, type, default, enums, optional=false)`](#fn-argumentnew)
 * [`obj func`](#obj-func)
   * [`fn new(help="", args=[])`](#fn-funcnew)
   * [`fn withArgs(args)`](#fn-funcwithargs)
@@ -45,7 +45,7 @@ local d = import "github.com/jsonnet-libs/docsonnet/doc-util/main.libsonnet"
 ### fn arg
 
 ```ts
-arg(name, type, default, enums, isOptional=false)
+arg(name, type, default, enums, optional=false)
 ```
 
 `arg` is a shorthand for `argument.new`
@@ -107,13 +107,14 @@ Utilities for creating function arguments
 #### fn argument.new
 
 ```ts
-new(name, type, default, enums, isOptional=false)
+new(name, type, default, enums, optional=false)
 ```
 
 `new` creates a new function argument, taking the `name`, the `type`. Optionally it
 can take a `default` value and `enum`-erate potential values.
 
-Examples:
+Also, you can specify if a parameter is optional. By default, all parameters are required.
+
 
 ```jsonnet
 [
