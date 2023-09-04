@@ -30,8 +30,8 @@
       d.arg('name', d.T.string),
       d.arg('url', d.T.string),
       d.arg('help', d.T.string),
-      d.arg('filename', d.T.string, '', isOptional=true),
-      d.arg('version', d.T.string, 'master', isOptional=true),
+      d.arg('filename', d.T.string, '', optional=true),
+      d.arg('version', d.T.string, 'master', optional=true),
     ]),
     new(name, url, help, filename='', version='master')::
       {
@@ -86,8 +86,8 @@
     '#new': d.fn(
       help='new creates a new object, optionally with description and fields',
       args=[
-        d.arg('help', d.T.string, '', isOptional=true),
-        d.arg('fields', d.T.object, {}, isOptional=true),
+        d.arg('help', d.T.string, '', optional=true),
+        d.arg('fields', d.T.object, {}, optional=true),
       ]
     ),
     new(help='', fields={}):: {
@@ -113,8 +113,8 @@
     '#new': d.fn(
       help='new creates a new function, optionally with description and arguments',
       args=[
-        d.arg('help', d.T.string, default='', isOptional=true),
-        d.arg('args', d.T.array, default=[], isOptional=true),
+        d.arg('help', d.T.string, default='', optional=true),
+        d.arg('args', d.T.array, default=[], optional=true),
       ]
     ),
     new(help='', args=[]):: {
@@ -148,7 +148,8 @@
       `new` creates a new function argument, taking the `name`, the `type`. Optionally it
       can take a `default` value and `enum`-erate potential values.
 
-      Examples:
+      Also, you can specify if a parameter is optional. By default, all parameters are required.
+
 
       ```jsonnet
       [
@@ -160,14 +161,14 @@
     |||, [
       d.arg('name', d.T.string),
       d.arg('type', d.T.string),
-      d.arg('default', d.T.any, isOptional=true),
-      d.arg('enums', d.T.array, isOptional=true),
-      d.arg('isOptional', d.T.boolean, false, null, isOptional=true),
+      d.arg('default', d.T.any, optional=true),
+      d.arg('enums', d.T.array, optional=true),
+      d.arg('optional', d.T.boolean, false, null, optional=true),
     ]),
-    new(name, type, default=null, enums=null, isOptional=false): {
+    new(name, type, default=null, enums=null, optional=false): {
       name: name,
       type: type,
-      isOptional: isOptional,
+      optional: optional,
       default: default,
       enums: enums,
     },
@@ -181,8 +182,8 @@
       help='new creates a new object of given type, optionally with description and default value',
       args=[
         d.arg('type', d.T.string),
-        d.arg('help', d.T.string, default='', isOptional=true),
-        d.arg('default', d.T.any, isOptional=true),
+        d.arg('help', d.T.string, default='', optional=true),
+        d.arg('default', d.T.any, optional=true),
       ]
     ),
     new(type, help='', default=null): {
